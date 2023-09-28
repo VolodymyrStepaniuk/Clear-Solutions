@@ -3,7 +3,7 @@ package com.stepaniuk.clear_solutions.user.payload.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class UserResponse {
@@ -11,7 +11,7 @@ public class UserResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private String address;
     private String phoneNumber;
 }

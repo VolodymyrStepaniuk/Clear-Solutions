@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ElementType.TYPE_USE, METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface Age {
-    String message() default "";
+    String message() default "Your age does not meet the requirements!";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
