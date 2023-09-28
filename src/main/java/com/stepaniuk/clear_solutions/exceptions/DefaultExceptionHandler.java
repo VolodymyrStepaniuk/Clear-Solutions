@@ -7,6 +7,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +25,29 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(apiError,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({IllegalDateException.class})
+    public ResponseEntity<ApiError> handleIllegalDateException(IllegalDateException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<ApiError> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                "Invalid "+e.getName().toUpperCase()+" parameter",
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ApiError> handleValidationError(MethodArgumentNotValidException e, HttpServletRequest request){

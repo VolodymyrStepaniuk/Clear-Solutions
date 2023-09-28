@@ -1,5 +1,6 @@
 package com.stepaniuk.clear_solutions.user;
 
+import com.stepaniuk.clear_solutions.exceptions.IllegalDateException;
 import com.stepaniuk.clear_solutions.exceptions.UserNotFoundException;
 import com.stepaniuk.clear_solutions.user.payload.request.CreateUserRequest;
 import com.stepaniuk.clear_solutions.user.payload.request.UpdateUserRequest;
@@ -74,8 +75,15 @@ public class UserService {
         return mapper.toResponse(repository.save(user));
     }
 
-    public UserListResponse getListByDateBetween(LocalDate fromDate, LocalDate toDate) {
+    public UserListResponse getListByDateBetween(LocalDate fromDate, LocalDate toDate){
+        validateDateInterval(fromDate, toDate);
         var listOfUsers = repository.findAllByBirthDateBetween(fromDate, toDate).stream().map(mapper::toResponse).toList();
         return new UserListResponse(listOfUsers, listOfUsers.size());
+    }
+
+    private void validateDateInterval(LocalDate fromDate, LocalDate toDate){
+        if (fromDate.isBefore(toDate))
+            return;
+        throw new IllegalDateException();
     }
 }
